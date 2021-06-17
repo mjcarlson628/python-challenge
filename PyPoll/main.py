@@ -3,6 +3,8 @@ import os
 import csv
 
 csvpath = os.path.join('Resources', 'election_data.csv')
+output_path = os.path.join("Analysis", "PyPoll_analysis.txt")
+
 
 with open(csvpath) as csvfile:
 # read election_data.csv
@@ -31,18 +33,21 @@ with open(csvpath) as csvfile:
 # if the name has been encountered, count it as one more vote in results
             results[row[2]] += 1
 
-    print("Election Results")
-    print("-------------------------------")
-    print(f"Total Votes: {total_votes}")
-    print("-------------------------------")
-    
-    for x in candidates:
-# print the percentage and total number of votes won by each candidate
-# display the percent to 3 decimals
-        percent_won = results[x] * 100 / total_votes
-        print(f"{x}: {format(percent_won, '.3f')}%  ({results[x]})")
+    with open(output_path, "w") as outfile:
+        outfile.write("Election Results\n")
+        outfile.write("-------------------------------\n")
+        outfile.write(f"Total Votes: {total_votes}\n")
+        outfile.write("-------------------------------\n")
+        
+        for x in candidates:
+    # print the percentage and total number of votes won by each candidate
+    # display the percent to 3 decimals
+            percent_won = results[x] * 100 / total_votes
+            outfile.write(f"{x}: {format(percent_won, '.3f')}%  ({results[x]})\n")
 
-# find which key in the results dictionary has the highest value and declare the winner
-    print("-------------------------------")
-    print(f"Winner: {max(results, key = results.get)}")
-    print("-------------------------------")
+    # find which key in the results dictionary has the highest value and declare the winner
+        outfile.write("-------------------------------\n")
+        outfile.write(f"Winner: {max(results, key = results.get)}\n")
+        outfile.write("-------------------------------")
+    
+    print(open(output_path, "r").read())
